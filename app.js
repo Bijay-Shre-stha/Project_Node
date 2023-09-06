@@ -1,34 +1,48 @@
-const express = require('express');
-const app = express();
+const express = require('express')
+const { blogs } = require('./modal/index.js')
+const app = express()
 
-app.set('view engine', 'ejs');
-app.use(express.urlencoded({ extended: true })); // Add this middleware to parse POST request bodies
 
-app.get("/", (req, res) => {
-    res.render("index");
-});
 
-app.get("/create", (req, res) => {
-    res.render("create");
-});
+// database connection 
+require("./modal/index.js")
 
-app.post("/create", (req, res) => {
-    const { title, subtitle, description } = req.body;
+// telling the nodejs to set view-engine to ejs
+app.set('view engine','ejs')
 
-    if (!title || !subtitle || !description) {
-        res.status(400).json({ error: "All fields are required." });
-        return;
-    }
 
-    const jsonData = {
-        title,
-        subtitle,
-        description
-    };
-    console.log(jsonData);
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
 
-});
+// allBlog
+app.get("/",(req,res)=>{
+    res.render('index')
+})
 
-app.listen(3000, () => {
-    console.log("started at 3000");
-});
+//createBlog
+app.get("/create",(req,res)=>{
+    res.render("create")
+})
+
+//createBlog Post
+app.post("/create",async (req,res)=>{
+    
+        // second approach
+        // const {title,description,subtitle} = req.body
+    // first approach
+    const title = req.body.title
+    const description  = req.body.description
+    const subTitle = req.body.subtitle
+   
+    await blogs.create({
+        title : title,
+        subTitle:subTitle,
+        description : description
+    })
+
+    res.send("form submitted successfully")
+})
+
+app.listen(3000,()=>{
+    console.log("NodeJs project has started at port 3000")
+})
