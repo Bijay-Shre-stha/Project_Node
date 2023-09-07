@@ -8,33 +8,38 @@ const app = express()
 require("./modal/index.js")
 
 // telling the nodejs to set view-engine to ejs
-app.set('view engine','ejs')
+app.set('view engine', 'ejs')
 
 
 app.use(express.json())
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: true }))
 
 // allBlog
-app.get("/",(req,res)=>{
-    res.render('index')
+app.get("/",async (req, res) => {
+    const allBlogs = await blogs.findAll()
+    console.log(allBlogs)
+    
+    res.render('index',{
+        blogs:allBlogs
+    })
 })
 
 //createBlog
-app.get("/create",(req,res)=>{
+app.get("/create", (req, res) => {
     res.render("create")
 })
 
 //createBlog Post
-app.post("/create",async (req,res)=>{
+app.post("/create", async (req, res) => {
 
     const title = req.body.title
-    const description  = req.body.description
+    const description = req.body.description
     const subTitle = req.body.subtitle
-   
+
     await blogs.create({
-        title : title,
-        subTitle:subTitle,
-        description : description
+        title: title,
+        subTitle: subTitle,
+        description: description
     })
     const script = `
     <script>
@@ -42,11 +47,11 @@ app.post("/create",async (req,res)=>{
         window.location.href = "/";
     </script>
     `;
-
-res.send(script);
-    
+    res.send(script);
 })
 
-app.listen(3000,()=>{
+
+
+app.listen(3000, () => {
     console.log("NodeJs project has started at port 3000")
 })

@@ -54,16 +54,19 @@
         .card h2 {
             font-size: 24px;
             margin-bottom: 10px;
+            color: #333; /* Change title color */
         }
 
         .card h3 {
             color: var(--accent);
             margin-bottom: 10px;
+            font-size: 20px; /* Increase subtitle font size */
         }
 
         .card p {
             font-size: 16px;
             line-height: 1.5;
+            color: #666; /* Change description color */
         }
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -93,29 +96,13 @@
     </nav>
 
     <div class="container">
-        <div class="card">
-            <h2 class="text-black font-weight-bolder"><u>Title</u></h2>
-            <h3>Subtitle </h3>
-            <p>Description for Card goes here.</p>
-        </div>
-
-        <div class="card">
-            <h2 class="text-black font-weight-bolder"><u>Title</u></h2>
-            <h3>Subtitle </h3>
-            <p>Description for Card goes here.</p>
-        </div>
-
-        <div class="card">
-            <h2 class="text-black font-weight-bolder"><u>Title</u></h2>
-            <h3>Subtitle</h3>
-            <p>Description for Card goes here.</p>
-        </div>
-
-        <div class="card">
-            <h2 class="text-black font-weight-bolder"><u>Title</u></h2>
-            <h3>Subtitle</h3>
-            <p>Description for Card goes here.</p>
-        </div>
+        <% blogs.length>0 && blogs.forEach((blog) => { %>
+            <div class="card">
+                <h2 class="text-black font-weight-bolder"><u><span style="color: #ff6600;"><%= blog.title %></span></u></h2>
+                <h3><span style="font-size: 22px;"><%= blog.subTitle %></span></h3>
+                <p style="color: #444;"><%= blog.description %></p>
+            </div>
+        <% }) %>
     </div>
 </body>
 
