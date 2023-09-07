@@ -26,10 +26,7 @@ app.get("/create",(req,res)=>{
 
 //createBlog Post
 app.post("/create",async (req,res)=>{
-    
-        // second approach
-        // const {title,description,subtitle} = req.body
-    // first approach
+
     const title = req.body.title
     const description  = req.body.description
     const subTitle = req.body.subtitle
@@ -39,8 +36,15 @@ app.post("/create",async (req,res)=>{
         subTitle:subTitle,
         description : description
     })
+    const script = `
+    <script>
+        alert("Note added");
+        window.location.href = "/";
+    </script>
+    `;
 
-    res.send("form submitted successfully")
+res.send(script);
+    
 })
 
 app.listen(3000,()=>{
