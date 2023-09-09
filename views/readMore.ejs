@@ -125,8 +125,11 @@
 
         <div class="post-footer">
             Published on <%- blog[0].createdAt.toISOString().slice(0,10) %><br>
-                <button class="btn "><a href="/">Go back ←</a></button>
+                <button class="btn "><a class="text-black-50" href="/">Go back ←</a></button>
         </div>
+        <!--delete-->
+        <button class=" btn btn-danger"><a class="text-white" href="/delete/<%-blog[0].id %>">Delete</a></button>
+
     </div>
 </body>
 

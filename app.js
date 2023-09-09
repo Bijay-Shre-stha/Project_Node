@@ -51,23 +51,36 @@ app.post("/create", async (req, res) => {
 })
 
 //read more
-app.get("/note/:id", async(req, res) => {
+app.get("/note/:id", async (req, res) => {
     const { id } = req.params
-    console.log(id);
     const blog = await blogs.findAll({
         where: {
             id: id
         }
-        
     })
-    console.log(blog);
-    res.render("readMore.ejs",{
+    res.render("readMore.ejs", {
         blog: blog
     })
 
 }
 )
 
+//delete
+app.get("/delete/:id", async (req, res) => {
+    const id = req.params.id
+    await blogs.destroy({
+        where: {
+            id: id
+        }
+        });
+    const script = `
+    <script>
+        alert("Note deleted");
+        window.location.href = "/";
+    </script>
+    `;
+    res.send(script);
+})
 
 
 app.listen(3000, () => {
