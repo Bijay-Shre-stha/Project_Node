@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Page</title>
+    <title>Edit Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -86,7 +86,7 @@
 
 <body>
     <header>
-        <h1>Add Content</h1>
+        <h1>Edit Content</h1>
     </header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand font-weight-bold" href="/">NOTE</a>
@@ -108,21 +108,21 @@
     </nav>
 
     <div class="container">
-        <h2>Submit Your Information</h2>
-        <form action="/create" method="post">
+        <h2>Edit Your Information</h2>
+        <form action="/edit/<%= blog[0].id %>" method="post">
             <div class="form-group">
                 <label for="title">Title:</label>
-                <input type="text" id="title" name="title" required>
+                <input type="text" id="title" name="title" value="<%- blog[0].title %>" required>
             </div>
             <div class="form-group">
                 <label for="subtitle">Subtitle:</label>
-                <input type="text" id="subtitle" name="subtitle" required>
+                <input type="text" id="subtitle" name="subtitle" value="<%- blog[0].subTitle %>" required>
             </div>
             <div class="form-group">
                 <label for="description">Description:</label>
-                <textarea id="description" name="description" rows="4" required></textarea>
+                <textarea id="description" name="description" rows="4" required><%- blog[0].description %></textarea>
             </div>
-            <button type="submit">Submit</button>
+            <button type="submit">Update</button>
         </form>
     </div>
 </body>

@@ -72,7 +72,7 @@ app.get("/delete/:id", async (req, res) => {
         where: {
             id: id
         }
-        });
+    });
     const script = `
     <script>
         alert("Note deleted");
@@ -82,6 +82,41 @@ app.get("/delete/:id", async (req, res) => {
     res.send(script);
 })
 
+
+//edit
+app.get("/edit/:id", async (req, res) => {
+    const id = req.params.id
+    const blog = await blogs.findAll({
+        where: {
+            id: id
+        }
+    })
+    res.render("edit", { blog: blog });
+})
+
+//edit post
+app.post("/edit/:id", async (req, res) => {
+    const id = req.params.id
+    const title = req.body.title
+    const description = req.body.description
+    const subTitle = req.body.subtitle
+    await blogs.update({
+        title: title,
+        subTitle: subTitle,
+        description: description
+    }, {
+        where: {
+            id: id
+        }
+    })
+    const script = `
+    <script>
+        alert("Note updated");
+        window.location.href = "/";
+    </script>
+    `;
+    res.send(script);
+})
 
 app.listen(3000, () => {
     console.log("NodeJs project has started at port 3000")
