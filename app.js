@@ -10,6 +10,9 @@ require("./modal/index.js")
 // telling the nodejs to set view-engine to ejs
 app.set('view engine', 'ejs')
 
+// telling the nodejs to use static files
+app.use(express.static("./Public/css"))
+
 
 
 app.use(express.json())
