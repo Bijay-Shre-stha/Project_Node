@@ -34,6 +34,7 @@ db.sequelize = sequelize;
 
 // importing model files 
 db.blogs = require("./blogModel.js")(sequelize, DataTypes);
+db.users = require("./userModel.js")(sequelize, DataTypes);
 
 
 db.sequelize.sync({ force: false }).then(() => {
