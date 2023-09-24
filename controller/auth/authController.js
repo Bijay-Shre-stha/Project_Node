@@ -6,11 +6,10 @@ exports.renderRegisterForm = (req, res) => {
 }
 
 exports.registerUser = async (req, res) => {
-    
     const { email, username, password, confirmPassword } = req.body
 
     if (password !== confirmPassword) {
-        res.send("Password and confirmPassword doesn't matched")
+        res.send("Password and confirmPassword don't match")
         return
     }
 
@@ -23,14 +22,33 @@ exports.registerUser = async (req, res) => {
     res.redirect("/login")
 }
 
-
-// LOGIN Starts from here
-
 exports.renderLoginForm = (req, res) => {
     res.render("login")
 }
 
-exports.loginUser = (req, res) => {
+exports.loginUser = async (req, res) => {
     console.log(req.body)
-    res.redirect("/")
+    const { email, password } = req.body
+    if (!email || !password) {
+        res.send("Please provide email and password")
+        return
+    }
+    // SELECT * FROM users WHERE email = email
+    const userEmailExist = await users.findAll({
+        where: {
+            email
+        }
+    })
+
+    if (userEmailExist.length === 0) { // Check if the array is empty
+        return res.send("Email not found. Please provide a valid email.")
+    } else {
+        const userPassword = userEmailExist[0].password
+        const isMatched = bcrypt.compareSync(password, userPassword)
+        if (isMatched) {
+            return res.send("Login Successful")
+        } else {
+            return res.send("Incorrect password. Please provide the correct password.")
+        }
+    }
 }
