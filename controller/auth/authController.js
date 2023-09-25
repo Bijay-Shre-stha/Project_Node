@@ -1,5 +1,6 @@
 const { users } = require("../../modal")
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
 
 exports.renderRegisterForm = (req, res) => {
     res.render("register")
@@ -46,6 +47,17 @@ exports.loginUser = async (req, res) => {
         const userPassword = userEmailExist[0].password
         const isMatched = bcrypt.compareSync(password, userPassword)
         if (isMatched) {
+            //token generate
+            const token = jwt.sign({
+                id: userEmailExist[0].id
+            }, process.env.SECRET__KEY, {
+                expiresIn: "30d"
+            })
+            //token send to cookie
+            res.cookie("token", token, {
+                secure: true,
+            })
+            console.log(token);
             return res.send("Login Successful")
         } else {
             return res.send("Incorrect password. Please provide the correct password.")

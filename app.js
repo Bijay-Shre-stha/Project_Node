@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+require('dotenv').config() 
+
 const blogRoutes = require("./Routes/blogRoutes.js")
 
 const authRoute = require("./Routes/authRoutes")
