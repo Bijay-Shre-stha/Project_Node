@@ -3,9 +3,12 @@ const app = express()
 
 require('dotenv').config() 
 
+const cookieParser = require("cookie-parser")
+
 const blogRoutes = require("./Routes/blogRoutes.js")
 
 const authRoute = require("./Routes/authRoutes")
+
 
 // database connection 
 require("./modal/index.js")
@@ -16,6 +19,7 @@ app.set('view engine', 'ejs')
 // telling the nodejs to use static files
 app.use(express.static("./Public/css"))
 
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
