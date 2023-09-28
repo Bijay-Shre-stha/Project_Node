@@ -16,28 +16,32 @@
     <%- include ('Components/navbar.ejs') %>
 
 
-    <div class="container">
-        <div class="author-info">
-            <div class="author-name">
-                <h2 class="mb-0">TITLE: <%- blog[0].title %></h2><br>
-                <h4 class="text-secondary">SUBTITLE: <%- blog[0].subTitle %></h4>
+        <div class="container">
+            <div class="author-info">
+                <div class="author-name">
+                    <h2 class="mb-0">TITLE: <%- blog[0].title %></h2><br>
+                    <h4 class="text-secondary">SUBTITLE: <%- blog[0].subTitle %></h4>
+                </div>
             </div>
-        </div>
-        <div class="post-content">
-            <p class="lead">DESCRIPTION: <%- blog[0].description %></p>
-        </div>
+            <div class="post-content">
+                <p class="lead">DESCRIPTION: <%- blog[0].description %></p>
+            </div>
 
-        <div class="post-footer">
-            Published on <%- blog[0].createdAt.toISOString().slice(0,10) %><br>
-                <button class="btn "><a class="text-black-50" href="/">Go back ←</a></button>
-        </div>
-        <!--update-->
-        <button class=" btn btn-success"><a class="text-white" href="/edit/<%-blog[0].id %>">Edit</a></button>
-        <!--delete-->
-        <button class=" btn btn-danger"><a class="text-white" href="/delete/<%-blog[0].id %>">Delete</a></button>
+            <div class="post-footer">
+                <p>Author: <%= blog[0].user.email %>
+                </p>
+                <p>Author: <%= blog[0].user.username %>
+                </p>
+                Published on <%- blog[0].createdAt.toISOString().slice(0,10) %><br>
+                    <button class="btn "><a class="text-black-50" href="/">Go back ←</a></button>
+            </div>
+            <!--update-->
+            <button class=" btn btn-success"><a class="text-white" href="/edit/<%-blog[0].id %>">Edit</a></button>
+            <!--delete-->
+            <button class=" btn btn-danger"><a class="text-white" href="/delete/<%-blog[0].id %>">Delete</a></button>
 
-    </div>
-    <%- include ('Components/Footer.ejs') %>
+        </div>
+        <%- include ('Components/Footer.ejs') %>
 </body>
 
 </html>

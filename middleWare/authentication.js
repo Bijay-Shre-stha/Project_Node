@@ -23,6 +23,7 @@ exports.isAuthenticated = async (req, res, next) => {
     }
     else{
         req.user = userExits;
+        req.userId = userExits[0].id;
         next()
     }
 }

@@ -17,25 +17,22 @@
     </header>
     <%- include ('Components/navbar.ejs') %>
 
+        <h1>My Blogs</h1>
 
-    <div class="container">
-        <% if (blogs.length > 0) { %>
-            <% blogs.forEach((blog) => { %>
+
+        <div class="container">
+            <%myBlogs.length>0 && myBlogs.forEach((blog)=>{ %>
                 <div class="card">
                     <h2 class="text-black font-weight-bolder"><u><%= blog.title %></u></h2>
                     <h3><%= blog.subTitle %></h3>
                     <p><%= blog.description.slice(0,100)%>...</p>
-                    <p>Author: <%= blog.user.username %></p>
-                    <a href="/note/<%= blog.id %>">Read More</a> <!-- Fix the rendering of blog.id here -->
-                </div>
-            <% }); %>
-        <% } else { %>
-            <h1>No notes available</h1>
-        <% } %>
-    </div>
+                    <a href="/note/<%= blog.id %>">Read More</a> 
+            </div>
+                <% }) %>
+        </div>
 
-    <%- include ('Components/Footer.ejs') %>
-    
+        <%- include ('Components/Footer.ejs') %>
+
 </body>
 
 </html>

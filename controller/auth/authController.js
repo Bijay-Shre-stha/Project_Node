@@ -58,9 +58,15 @@ exports.loginUser = async (req, res) => {
                 secure: true,
             })
             console.log(token);
-            return res.send("Login Successful")
+            const script = `
+            <script>
+                alert("Note login Successfully");
+                window.location.href = "/";
+            </script>
+            `;
+            res.send(script);
         } else {
-            return res.send("Incorrect password. Please provide the correct password.")
+            res.send("Incorrect password. Please provide the correct password.")
         }
     }
 }
