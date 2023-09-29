@@ -18,12 +18,24 @@ exports.isAuthenticated = async (req, res, next) => {
             id: decoded.id
         }
     })
-    if(userExits.length == 0){
+    if (userExits.length == 0) {
         return res.send("User does not exits")
     }
-    else{
+    else {
         req.user = userExits;
         req.userId = userExits[0].id;
         next()
     }
+}
+
+exports.logout = (req, res) => {
+    res.clearCookie("token")
+    const script = `
+            <script>
+                alert("Logged out Successfully");
+            </script>
+            `;
+            res.send(script);
+    res.redirect("/login")
+
 }
