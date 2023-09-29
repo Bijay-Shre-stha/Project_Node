@@ -18,6 +18,8 @@ app.set('view engine', 'ejs')
 
 // telling the nodejs to use static files
 app.use(express.static("./Public/css"))
+app.use(express.static("uploads/"))
+
 
 app.use(cookieParser())
 app.use(express.json())

@@ -17,7 +17,7 @@
     </header>
     <%- include ('Components/navbar.ejs') %>
 
-        <h1>My Blogs</h1>
+        <h1 style="text-align: center;">My Blogs</h1>
 
 
         <div class="container">
@@ -25,6 +25,7 @@
                 <div class="card">
                     <h2 class="text-black font-weight-bolder"><u><%= blog.title %></u></h2>
                     <h3><%= blog.subTitle %></h3>
+                    <img src="<%-blog.image  %>" alt="" height="50px" width="50px">
                     <p><%= blog.description.slice(0,100)%>...</p>
                     <a href="/note/<%= blog.id %>">Read More</a> 
             </div>

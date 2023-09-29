@@ -9,11 +9,26 @@ exports.createBlog = async (req, res) => {
     const description = req.body.description
     const subTitle = req.body.subtitle
     const userId = req.user[0].id
+
+    const fileName = req.file.filename
+
+    if(!title ||!description ||!subTitle ||!fileName ){
+        const script = `
+        <script>
+            alert("Please fill all the fields");
+            window.location.href = "/create";
+        </script>
+        `;
+        return res.send(script);
+    }
+    
+
     await blogs.create({
         title: title,
         subTitle: subTitle,
         description: description,
-        userId: userId
+        userId: userId,
+        image: process.env.URL+fileName
     })
     const script = `
     <script>
