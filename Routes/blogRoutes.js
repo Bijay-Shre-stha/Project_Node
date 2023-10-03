@@ -9,7 +9,7 @@ router.route("/").get(isAuthenticated,allBlogs);
 router.route("/create").get(renderCreateBlog).post(isAuthenticated,upload.single("image"), createBlog);
 router.route("/note/:id").get(isAuthenticated,readMore);
 router.route("/delete/:id").get(isAuthenticated,deleteBlog)
-router.route("/edit/:id").post(isAuthenticated,editBlog);
+router.route("/edit/:id").post(isAuthenticated, upload.single("image"),editBlog);
 router.route("/edit/:id").get(isAuthenticated,renderEditBlog)
 router.route("/myBlogs").get(isAuthenticated,renderMyBlogs)
 

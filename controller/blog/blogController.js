@@ -1,4 +1,5 @@
 const { blogs, users } = require("../../modal")
+const fs = require("fs")
 
 exports.renderCreateBlog = (req, res) => {
     res.render("create")
@@ -98,16 +99,53 @@ exports.editBlog = async (req, res) => {
     const title = req.body.title
     const description = req.body.description
     const subTitle = req.body.subtitle
+
+    const oldData = await blogs.findAll({
+        where: {
+            id: id
+        }
+    })
+
+    let fileUrl;
+    if (req.file) {
+        fileUrl = process.env.URL+ req.file.filename
+    } else {
+        fileUrl = oldData[0].image
+    }
+
     await blogs.update({
         title: title,
         subTitle: subTitle,
         description: description,
+        image: fileUrl
     }, {
         where: {
             id: id,
-
         }
     })
+    // http://localhost:3000/1696256867982-Background1.png
+    const oldImagePath = oldData[0].image
+    const fileNameInUploads = oldImagePath.slice(22)
+    console.log(fileNameInUploads)
+
+    fs.unlink('uploads/'+fileNameInUploads,(err)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            console.log("deleted");
+        }
+    })
+
+    // fs.unlink('uploads/test.ts',(err)=>{
+    //     if(err){
+    //         console.log(err);
+    //     }
+    //     else{
+    //         console.log("deleted");
+    //     }
+    // })
+
     const script = `
     <script>
         alert("Note updated");
