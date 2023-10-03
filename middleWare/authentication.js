@@ -7,7 +7,7 @@ exports.isAuthenticated = async (req, res, next) => {
 
     // Check if token given or not 
     if (!token) {
-        return res.send("You must be logged In ")
+        return res.redirect("/login")
     }
 
     // Verify token if it is legit or not
@@ -26,16 +26,4 @@ exports.isAuthenticated = async (req, res, next) => {
         req.userId = userExits[0].id;
         next()
     }
-}
-
-exports.logout = (req, res) => {
-    res.clearCookie("token")
-    const script = `
-            <script>
-                alert("Logged out Successfully");
-            </script>
-            `;
-            res.send(script);
-    res.redirect("/login")
-
 }

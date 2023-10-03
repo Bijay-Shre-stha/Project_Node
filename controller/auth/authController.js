@@ -60,7 +60,7 @@ exports.loginUser = async (req, res) => {
             console.log(token);
             const script = `
             <script>
-                alert("Note login Successfully");
+                alert("Login Successfully");
                 window.location.href = "/";
             </script>
             `;
@@ -70,3 +70,8 @@ exports.loginUser = async (req, res) => {
         }
     }
 }
+exports.renderLogout = (req, res) => {
+    res.clearCookie("token");
+    res.render("logout"); 
+}
+
