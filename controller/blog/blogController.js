@@ -70,11 +70,29 @@ exports.readMore = async (req, res) => {
 
 exports.deleteBlog = async (req, res) => {
     const id = req.params.id
-    await blogs.destroy({
+    const oldData = await blogs.findAll({
         where: {
             id: id
         }
+    })
+    const oldImagePath = oldData[0].image
+    const fileNameInUploads = oldImagePath.slice(22)
+    console.log(fileNameInUploads)
+    await blogs.destroy({
+        where: {
+            id: id
+
+        }
     });
+    fs.unlink('uploads/'+fileNameInUploads,(err)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            console.log("deleted from folder and Database");
+        }
+    }
+    )
     const script = `
     <script>
         alert("Note deleted");
@@ -133,7 +151,7 @@ exports.editBlog = async (req, res) => {
             console.log(err);
         }
         else{
-            console.log("deleted");
+            console.log("deleted from database");
         }
     })
 
