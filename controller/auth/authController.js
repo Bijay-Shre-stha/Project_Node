@@ -1,6 +1,7 @@
 const { users } = require("../../modal")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const sendEmail = require("../../services/sendEmail")
 
 exports.renderRegisterForm = (req, res) => {
     res.render("register")
@@ -72,6 +73,34 @@ exports.loginUser = async (req, res) => {
 }
 exports.renderLogout = (req, res) => {
     res.clearCookie("token");
-    res.render("logout"); 
+    res.render("logout");
 }
 
+exports.forgetPassword = (req, res) => {
+    res.render("forgetPassword")
+}
+exports.checkForgetPassword = async (req, res) => {
+    const email = req.body.email
+    if (!email) {
+        return res.send("Please provide email")
+    }
+
+    const emailExit = await users.findAll({
+        where: {
+            email: email
+        }
+    })
+    if (emailExit.length == 0) {
+        res.send("user with that email doesn't exit")
+    }
+    else {
+        await sendEmail(
+            {
+                email: email,
+                subject: "forget password",
+                otp: 123
+            }
+        )
+        res.send("otp send to your email")
+    }
+}
