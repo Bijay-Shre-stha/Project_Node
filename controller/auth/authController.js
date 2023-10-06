@@ -94,13 +94,64 @@ exports.checkForgetPassword = async (req, res) => {
         res.send("user with that email doesn't exit")
     }
     else {
+        const generatedOtp = Math.floor(10000 * Math.random(9999))
         await sendEmail(
             {
                 email: email,
                 subject: "forget password",
-                otp: 123
+                otp: generatedOtp
             }
         )
-        res.send("otp send to your email")
+
+        emailExit[0].otp = generatedOtp
+        emailExit[0].otpGenerated = Date.now()
+        await emailExit[0].save()
+        res.redirect("/otp?email=" + email)
     }
+}
+exports.otp = async (req, res) => {
+    const email = req.query.email
+    res.render("otp", {
+        email: email
+    })
+}
+
+exports.handleOtp = async (req, res) => {
+
+    const otp = req.body.otp
+    const email = req.params.id
+    if (!otp || !email) {
+        return res.send("please provide otp")
+    }
+    const userData = await users.findAll({
+        where: {
+            email: email
+        }
+    })
+    if (userData.length == 0) {
+        return res.send("user with that email doesn't exit")
+    }
+    else {
+        const currentTime = Date.now()
+        const otpTime = userData[0].otpGenerated
+        if (currentTime - otpTime <= 120000) {
+            if (userData[0].otp == otp) {
+                res.redirect("/resetPassword?email=" + email)
+            }
+            else {
+                res.send("invalid otp")
+            }
+        }
+        else {
+            res.send("otp expired")
+        }
+        //  res.send("valid")
+    }
+}
+
+exports.resetPassword = async (req, res) => {
+    const email = req.query.email
+    res.render("resetPassword", {
+        email: email
+    })
 }
