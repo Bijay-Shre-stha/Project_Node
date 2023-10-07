@@ -125,7 +125,8 @@ exports.handleOtp = async (req, res) => {
     }
     const userData = await users.findAll({
         where: {
-            email: email
+            email: email,
+            otp: otp
         }
     })
     if (userData.length == 0) {
@@ -135,13 +136,10 @@ exports.handleOtp = async (req, res) => {
         const currentTime = Date.now()
         const otpTime = userData[0].otpGenerated
         if (currentTime - otpTime <= 120000) {
-            if (userData[0].otp == otp) {
-                res.redirect("/resetPassword?email=" + email)
-            }
-            else {
-                res.send("invalid otp")
-            }
-        }
+            // userData[0].otp = null
+            // userData[0].otpGenerated = null
+            // await userData[0].save()
+            res.redirect(`/resetPassword?email=${email}&otp=${otp}`)        }
         else {
             res.send("otp expired")
         }
@@ -151,7 +149,56 @@ exports.handleOtp = async (req, res) => {
 
 exports.resetPassword = async (req, res) => {
     const email = req.query.email
+    const otp = req.query.otp
+    if (!email || !otp) {
+        return res.send("please provide email and otp")
+    }
     res.render("resetPassword", {
-        email: email
+        email: email,
+        otp: otp
     })
+}
+
+exports.handlePasswordChange = async (req, res) => {
+    const email = req.params.email
+    const otp = req.params.otp
+    console.log(email,otp);
+    const newPassword = req.body.newPassword
+    const confirmNewPassword = req.body.confirmNewPassword
+    if (!newPassword || !confirmNewPassword || !email) {
+        return res.send("please provide password and email")
+    }
+    //check if that email's otp or not
+    const userData = await users.findAll({
+        where: {
+            email: email,
+            otp: otp
+        }
+    })
+    if (userData.length == 0) {
+        return res.send("user with that email doesn't exit")
+    }
+    if (newPassword !== confirmNewPassword) {
+        return res.send("password and confirm password doesn't match")
+    }
+    const hashedNewPassword = bcrypt.hashSync(newPassword, 8)
+
+
+    // const userData = await users.findAll({
+    //     where: {
+    //         email: email
+    //     }
+    // })
+    // userData[0].password = hashedNewPassword
+
+
+    await userData[0].save()
+    await users.update({
+        password: hashedNewPassword
+    }, {
+        where: {
+            email: email
+        }
+    })
+    res.redirect("/login")
 }
