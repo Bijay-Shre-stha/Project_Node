@@ -41,6 +41,7 @@ exports.createBlog = async (req, res) => {
 }
 
 exports.allBlogs = async (req, res) => {
+    const success = req.flash("success")
     const allBlogs = await blogs.findAll({
         include: {
             model: users
@@ -49,7 +50,7 @@ exports.allBlogs = async (req, res) => {
     })
 
     res.render('index', {
-        blogs: allBlogs
+        blogs: allBlogs, success
     })
 }
 

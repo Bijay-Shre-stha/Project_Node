@@ -25,7 +25,8 @@ exports.registerUser = async (req, res) => {
 }
 
 exports.renderLoginForm = (req, res) => {
-    res.render("login")
+    const error = req.flash("error")
+    res.render("login",{error})
 }
 
 exports.loginUser = async (req, res) => {
@@ -58,16 +59,18 @@ exports.loginUser = async (req, res) => {
             res.cookie("token", token, {
                 secure: true,
             })
-            console.log(token);
-            const script = `
-            <script>
-                alert("Login Successfully");
-                window.location.href = "/";
-            </script>
-            `;
-            res.send(script);
+            // const script = `
+            // <script>
+            //     alert("Login Successfully");
+            //     window.location.href = "/";
+            // </script>
+            // `;
+            // res.send(script);
+            req.flash("success", "Login Successfully")
+            res.redirect("/")
         } else {
-            res.send("Incorrect password. Please provide the correct password.")
+            req.flash("error", "Invalid password")
+            res.redirect("/login")
         }
     }
 }
@@ -139,7 +142,8 @@ exports.handleOtp = async (req, res) => {
             // userData[0].otp = null
             // userData[0].otpGenerated = null
             // await userData[0].save()
-            res.redirect(`/resetPassword?email=${email}&otp=${otp}`)        }
+            res.redirect(`/resetPassword?email=${email}&otp=${otp}`)
+        }
         else {
             res.send("otp expired")
         }
@@ -162,7 +166,7 @@ exports.resetPassword = async (req, res) => {
 exports.handlePasswordChange = async (req, res) => {
     const email = req.params.email
     const otp = req.params.otp
-    console.log(email,otp);
+    console.log(email, otp);
     const newPassword = req.body.newPassword
     const confirmNewPassword = req.body.confirmNewPassword
     if (!newPassword || !confirmNewPassword || !email) {

@@ -9,6 +9,11 @@ const blogRoutes = require("./Routes/blogRoutes.js")
 
 const authRoute = require("./Routes/authRoutes")
 
+//require session
+const session = require("express-session")
+
+//require connect-flash
+const flash = require("connect-flash")
 
 // database connection 
 require("./modal/index.js")
@@ -24,6 +29,13 @@ app.use(express.static("uploads/"))
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(flash())
+app.use(session({
+    secret: process.env.SECRET__SESSION,
+    resave: false,
+    saveUninitialized: false,
+}))
+
 
 app.use((req,res,next)=>{
     res.locals.currentUser = req.cookies.token
