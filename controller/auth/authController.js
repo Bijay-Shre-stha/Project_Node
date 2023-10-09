@@ -204,5 +204,6 @@ exports.handlePasswordChange = async (req, res) => {
             email: email
         }
     })
+    req.flash("success", "Password Changed and Login successfully")
     res.redirect("/login")
 }

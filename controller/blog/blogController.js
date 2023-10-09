@@ -31,13 +31,8 @@ exports.createBlog = async (req, res) => {
         userId: userId,
         image: process.env.URL+fileName
     })
-    const script = `
-    <script>
-        alert("Note added");
-        window.location.href = "/";
-    </script>
-    `;
-    res.send(script);
+    req.flash("success","Noted added")
+    res.redirect("/")
 }
 
 exports.allBlogs = async (req, res) => {
@@ -94,13 +89,8 @@ exports.deleteBlog = async (req, res) => {
         }
     }
     )
-    const script = `
-    <script>
-        alert("Note deleted");
-        window.location.href = "/";
-    </script>
-    `;
-    res.send(script);
+    req.flash("success", "Note Deleted")
+    res.redirect("/")
 }
 
 exports.renderEditBlog = async (req, res) => {
@@ -164,14 +154,8 @@ exports.editBlog = async (req, res) => {
     //         console.log("deleted");
     //     }
     // })
-
-    const script = `
-    <script>
-        alert("Note updated");
-        window.location.href = "/";
-    </script>
-    `;
-    res.send(script);
+    req.flash("success", "Note Updated")
+    res.redirect("/")
 }
 
 exports.renderMyBlogs = async (req,res)=>{

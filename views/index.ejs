@@ -18,43 +18,46 @@
     <%- include ('Components/navbar.ejs') %>
 
 
-        <%- success %>
-            <div class="alert alert-success" id="alert" role="alert">
-                Login successfully
+        <% if (success && success.length> 0) { %>
+            <div class="alert alert-success" id="alert">
+                <%= success %>
             </div>
-            <div class="container">
-                <% if (blogs.length> 0) { %>
-                    <% blogs.forEach((blog)=> { %>
-                        <div class="card">
-                            <h2 class="text-black font-weight-bolder"><u>
-                                    <%= blog.title %>
-                                </u></h2>
-                            <h3>
-                                <%= blog.subTitle %>
-                            </h3>
-                            <p>
-                                <%= blog.description.slice(0,100)%>...
-                            </p>
-                            <p>Author: <%= blog.user.username %>
-                            </p>
-                            <a href="/note/<%= blog.id %>">Read More</a> <!-- Fix the rendering of blog.id here -->
-                        </div>
-                        <% }); %>
-                            <% } else { %>
-                                <h1>No notes available</h1>
-                                <% } %>
-            </div>
+            <% } %>
 
-            <%- include ('Components/Footer.ejs') %>
+                <div class="container">
+                    <% if (blogs.length> 0) { %>
+                        <% blogs.forEach((blog)=> { %>
+                            <div class="card">
+                                <h2 class="text-black font-weight-bolder"><u>
+                                        <%= blog.title %>
+                                    </u></h2>
+                                <h3>
+                                    <%= blog.subTitle %>
+                                </h3>
+                                <p>
+                                    <%= blog.description.slice(0,100)%>...
+                                </p>
+                                <p>Author: <%= blog.user.username %>
+                                </p>
+                                <a href="/note/<%= blog.id %>">Read More</a>
+                                <!-- Fix the rendering of blog.id here -->
+                            </div>
+                            <% }); %>
+                                <% } else { %>
+                                    <h1>No notes available</h1>
+                                    <% } %>
+                </div>
 
-            <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                    const alert = document.getElementById("alert");
-                    setTimeout(() => {
-                        alert.style.display = "none";
-                    }, 2000);
-                });
-            </script>
+                <%- include ('Components/Footer.ejs') %>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                            const alert = document.getElementById("alert");
+                            setTimeout(() => {
+                                alert.style.display = "none";
+                            }, 2000);
+                        });
+                    </script>
 
 </body>
 
