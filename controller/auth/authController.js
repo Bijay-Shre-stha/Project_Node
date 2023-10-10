@@ -4,7 +4,8 @@ const jwt = require("jsonwebtoken")
 const sendEmail = require("../../services/sendEmail")
 
 exports.renderRegisterForm = (req, res) => {
-    res.render("register")
+    const error = req.flash("error")
+    res.render("register", { error })
 }
 
 exports.registerUser = async (req, res) => {
@@ -26,7 +27,7 @@ exports.registerUser = async (req, res) => {
 
 exports.renderLoginForm = (req, res) => {
     const error = req.flash("error")
-    res.render("login",{error})
+    res.render("login", { error })
 }
 
 exports.loginUser = async (req, res) => {

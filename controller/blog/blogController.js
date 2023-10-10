@@ -1,6 +1,8 @@
 const { blogs, users } = require("../../modal")
 const fs = require("fs")
 
+const db = require("../../modal/index")
+const sequelize = db.sequelize
 exports.renderCreateBlog = (req, res) => {
     res.render("create")
 }
@@ -13,7 +15,7 @@ exports.createBlog = async (req, res) => {
 
     const fileName = req.file.filename
 
-    if(!title ||!description ||!subTitle ||!fileName ){
+    if (!title || !description || !subTitle || !fileName) {
         const script = `
         <script>
             alert("Please fill all the fields");
@@ -22,21 +24,27 @@ exports.createBlog = async (req, res) => {
         `;
         return res.send(script);
     }
-    
+
 
     await blogs.create({
         title: title,
         subTitle: subTitle,
         description: description,
         userId: userId,
-        image: process.env.URL+fileName
+        image: process.env.URL + fileName
     })
-    req.flash("success","Noted added")
+    req.flash("success", "Noted added")
     res.redirect("/")
 }
 
 exports.allBlogs = async (req, res) => {
     const success = req.flash("success")
+
+    
+    // const allBlogs = sequelize.query("SELECT * FROM BLOGS", {
+    //     type: sequelize.QueryTypes.SELECT
+    // })
+
     const allBlogs = await blogs.findAll({
         include: {
             model: users
@@ -80,11 +88,11 @@ exports.deleteBlog = async (req, res) => {
 
         }
     });
-    fs.unlink('uploads/'+fileNameInUploads,(err)=>{
-        if(err){
+    fs.unlink('uploads/' + fileNameInUploads, (err) => {
+        if (err) {
             console.log(err);
         }
-        else{
+        else {
             console.log("deleted from folder and Database");
         }
     }
@@ -117,7 +125,7 @@ exports.editBlog = async (req, res) => {
 
     let fileUrl;
     if (req.file) {
-        fileUrl = process.env.URL+ req.file.filename
+        fileUrl = process.env.URL + req.file.filename
     } else {
         fileUrl = oldData[0].image
     }
@@ -137,11 +145,11 @@ exports.editBlog = async (req, res) => {
     const fileNameInUploads = oldImagePath.slice(22)
     console.log(fileNameInUploads)
 
-    fs.unlink('uploads/'+fileNameInUploads,(err)=>{
-        if(err){
+    fs.unlink('uploads/' + fileNameInUploads, (err) => {
+        if (err) {
             console.log(err);
         }
-        else{
+        else {
             console.log("deleted from database");
         }
     })
@@ -158,15 +166,15 @@ exports.editBlog = async (req, res) => {
     res.redirect("/")
 }
 
-exports.renderMyBlogs = async (req,res)=>{
+exports.renderMyBlogs = async (req, res) => {
     // get this users blogs 
     const userId = req.userId;
     // find blogs of this userId 
     const myBlogs = await blogs.findAll({
-        where : {
-            userId : userId
+        where: {
+            userId: userId
         }
     })
 
-    res.render("myBlogs.ejs",{myBlogs : myBlogs})
+    res.render("myBlogs.ejs", { myBlogs: myBlogs })
 }

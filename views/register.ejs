@@ -82,6 +82,7 @@
     <%- include ('Components/navbar.ejs') %>
         <div class="container">
             <h2>Registration Form</h2>
+            <%- error %>
             <form action="/register" method="post">
                 <div class="form-group">
                     <label for="username">Username:</label>
