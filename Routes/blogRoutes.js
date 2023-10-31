@@ -11,7 +11,7 @@ router.route("/").get(catchError( isAuthenticated),allBlogs);
 router.route("/create").get(renderCreateBlog).post(catchError( isAuthenticated),upload.single("image"),sanitizer, createBlog);
 router.route("/note/:id").get(catchError( isAuthenticated),readMore);
 router.route("/delete/:id").get(catchError( isAuthenticated),deleteBlog)
-router.route("/edit/:id").post(catchError( isAuthenticated), upload.single("image"),editBlog);
+router.route("/edit/:id").post(catchError( isAuthenticated), upload.single("image"),sanitizer,editBlog);
 router.route("/edit/:id").get(catchError( isAuthenticated),renderEditBlog)
 router.route("/myBlogs").get(catchError( isAuthenticated),renderMyBlogs)
 

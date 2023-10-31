@@ -9,6 +9,8 @@ const blogRoutes = require("./Routes/blogRoutes.js")
 
 const authRoute = require("./Routes/authRoutes")
 
+const rateLimit = require("express-rate-limit")
+
 //require session
 const session = require("express-session")
 
@@ -36,6 +38,14 @@ app.use(session({
     saveUninitialized: false,
 }))
 
+//limiting the request
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    limit: 2 ,// limit each IP to 100 requests per windowMs
+    message: "Too many requested for forget password try again after 30 mins"
+
+});
+app.use("/forgotPassword",limiter)
 
 app.use((req,res,next)=>{
     res.locals.currentUser = req.cookies.token
@@ -50,4 +60,5 @@ app.use("", authRoute)
 
 app.listen(3000, () => {
     console.log("NodeJs project has started at port 3000")
-})
+}) 
+//!helmet
